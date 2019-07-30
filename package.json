@@ -1,0 +1,25 @@
+{
+  "name": "excel-merge",
+  "version": "1.0.0",
+  "description": "Merge excel files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdaskalov/excel-merge.git"
+  },
+  "keywords": [
+    "exceljs"
+  ],
+  "author": "Milko Daskalov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mdaskalov/excel-merge/issues"
+  },
+  "homepage": "https://github.com/mdaskalov/excel-merge#readme",
+  "dependencies": {
+    "exceljs": "^1.14.0"
+  }
+}
