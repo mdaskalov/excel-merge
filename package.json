@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/mdaskalov/excel-merge#readme",
   "dependencies": {
-    "exceljs": "^1.14.0"
+    "exceljs": "^1.14.0",
+    "lodash": "^4.17.15"
   }
 }
