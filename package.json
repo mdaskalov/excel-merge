@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Merge excel files",
   "main": "main.js",
+  "productName": "Excel Merge",
   "scripts": {
-    "start": "electron . --debug",
+    "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,7 +22,8 @@
   },
   "homepage": "https://github.com/mdaskalov/excel-merge#readme",
   "devDependencies": {
-    "electron": "^6.0.0"
+    "electron": "^6.0.0",
+    "electron-builder": "^21.2.0"
   },
   "dependencies": {
     "exceljs": "^1.14.0",
