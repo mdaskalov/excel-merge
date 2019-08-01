@@ -67,21 +67,9 @@ ipcMain.on('open-file-dialog', event => {
   }, files => {
     if (files) {
       var relativePath = path.relative(process.cwd(), files[0]);
-      console.log(relativePath)
       sourceParser.parseSourceFile(relativePath, data => {
-        dumpData(data)
         event.sender.send('parsed-data', data)
       })
     }
   })
 })
-
-
-const dumpData = data => {
-  data.forEach(dat => {
-    console.log(`${dat.stairway} / ${dat.floor} / Top: ${dat.apt}, Einheit: ${dat.unit}`)
-    dat.content.forEach(cnt => {
-      console.log(`  ${cnt.room} - ${cnt.surface} m2`)
-    })
-  })
-}

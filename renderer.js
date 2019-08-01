@@ -13,7 +13,7 @@ ipcRenderer.on('parsed-data', (event, data) => {
   const tbody = document.querySelector("#table-body")
   var html = ""
   data.forEach(dat => {
-    html += `<tr><td class="group-header" colspan="2">${dat.stairway} / ${dat.floor} / Top: ${dat.apt}, Einheit: ${dat.unit}</td></tr>`
+    html += `<tr><th class="group-header" colspan="2">${dat.stairway} / ${dat.floor} / Top: ${dat.apt}, Einheit: ${dat.unit}</th></tr>`
     dat.content.forEach(cnt => {
       html += `<tr><td>${cnt.room}</td><td>${cnt.surface}</td></tr>`
     })
