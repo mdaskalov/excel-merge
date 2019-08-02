@@ -4,19 +4,62 @@
 const {
   ipcRenderer
 } = require('electron')
+const mustache = require('mustache')
+const fs = require('fs')
+const path = require('path')
+const input = require('./src/input')
+const mapping = require('./src/mapping')
+const output = require('./src/output')
 
-document.querySelector('#open-source-file').addEventListener('click', () => {
-  ipcRenderer.send('open-file-dialog')
-})
+const views = [input, mapping, output];
 
-ipcRenderer.on('parsed-data', (event, data) => {
-  const tbody = document.querySelector("#table-body")
-  var html = ""
-  data.forEach(dat => {
-    html += `<tr><th class="group-header" colspan="2">${dat.stairway} / ${dat.floor} / Top: ${dat.apt}, Einheit: ${dat.unit}</th></tr>`
-    dat.content.forEach(cnt => {
-      html += `<tr><td>${cnt.room}</td><td>${cnt.surface}</td></tr>`
-    })
+const deactivateDocLinks = () => {
+  const active = document.querySelectorAll('.nav-group-item.active')
+  Array.prototype.forEach.call(active, item => {
+    item.classList.remove('active')
   })
-  tbody.innerHTML = html;
+}
+
+const activateDocLink = view => {
+  const docLink = document.querySelector(`#${view}-view.nav-group-item`)
+  docLink.classList.add('active')
+}
+
+const renderDataPane = viewName => {
+  const viewIndex = views.map(view => view.name).indexOf(viewName)
+  if (viewIndex != -1) {
+    var template = fs.readFileSync(path.join(__dirname, 'templates', viewName + '.mustache'), 'utf-8')
+    const dataPane = document.querySelector('#data-pane')
+    dataPane.innerHTML = mustache.render(template, views[viewIndex]);
+  }
+}
+
+// Events
+
+const docButtons = document.querySelectorAll('.nav-group-item')
+Array.prototype.forEach.call(docButtons, button => {
+  const viewName = button.id.substring(0, button.id.indexOf("-view"))
+  if (viewName != undefined) {
+    button.addEventListener('click', () => {
+      deactivateDocLinks()
+      activateDocLink(viewName)
+      renderDataPane(viewName)
+    })
+  }
 })
+
+document.querySelector('#select-input-file').addEventListener('click', () => {
+  ipcRenderer.send('select-input-file')
+})
+
+// Messages
+
+ipcRenderer.on('input-file-selected', (_, fileName) => {
+  input.parseFile(fileName).then(() => {
+    renderDataPane('input')
+  })
+})
+
+// Global
+
+renderDataPane('input')
