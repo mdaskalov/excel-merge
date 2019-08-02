@@ -1,11 +1,10 @@
 // Modules to control application life and create native browser window
 const {
   app,
-  ipcMain,
-  dialog,
   BrowserWindow
 } = require('electron')
 const path = require('path')
+require('./communication')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -57,19 +56,5 @@ app.on('activate', function() {
   if (mainWindow === null) createWindow()
 })
 
-const sourceParser = require('./src/source-parser')
-
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-ipcMain.on('open-file-dialog', event => {
-  dialog.showOpenDialog({
-    properties: ['openFile']
-  }, files => {
-    if (files) {
-      var relativePath = path.relative(process.cwd(), files[0]);
-      sourceParser.parseSourceFile(relativePath, data => {
-        event.sender.send('parsed-data', data)
-      })
-    }
-  })
-})
