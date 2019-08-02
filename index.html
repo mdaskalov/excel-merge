@@ -21,11 +21,11 @@
 
       <div class="toolbar-actions">
         <div class="btn-group">
-          <button id="open-source-file" class="btn btn-default">
+          <button id="select-input-file" class="btn btn-default">
             <span class="icon icon-folder"></span>
           </button>
           <button class="btn btn-default">
-            <span class="icon icon-popup"></span>
+            <span class="icon icon-floppy"></span>
           </button>
         </div>
       </div>
@@ -35,26 +35,24 @@
       <div class="pane-group">
         <div class="pane pane-sm sidebar">
           <nav class="nav-group">
-            <h5 class="nav-group-title">Favorites</h5>
-            <span class="nav-group-item">
-              <span class="icon icon-home"></span>
-              Home
+            <h5 class="nav-group-title">Documents</h5>
+            <span id="input-view" class="nav-group-item active">
+              <span class="icon icon-login"></span>
+              Input
+            </span>
+            <span id="mapping-view" class="nav-group-item">
+              <span class="icon icon-retweet"></span>
+              Mapping
+            </span>
+            <span id="output-view" class="nav-group-item">
+              <span class="icon icon-logout"></span>
+              Output
             </span>
           </nav>
         </div>
 
-        <div class="pane">
-          <table class="table-striped">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>m<super>2</super>
-                </th>
-              </tr>
-            </thead>
-            <tbody id="table-body">
-            </tbody>
-          </table>
+        <div id="data-pane" class="pane">
+          no data loaded.
         </div>
       </div>
     </div>
