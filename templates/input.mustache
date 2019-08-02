@@ -1,0 +1,19 @@
+<table class="table-striped">
+  <thead>
+    <tr><th>Name</th><th>m2</th></tr>
+  </thead>
+  <tbody>
+    {{^data}}<tr><th class="group-header" colspan="2">No input data</th></tr>{{/data}}
+    {{#data}}
+    <tr>
+      <th class="group-header" colspan="2">{{stairway}} / {{floor}} / Top: {{apt}}, Einheit: {{unit}}</th>
+    </tr>
+    {{#content}}
+    <tr>
+      <td>{{room}}</td>
+      <td>{{surface}}</td>
+    </tr>
+    {{/content}}
+    {{/data}}
+  </tbody>
+</table>'
