@@ -17,6 +17,6 @@ const renderHTML = () => {
   }
 }
 
-exports.name = name;
-exports.data = data;
-exports.renderHTML = renderHTML;
+exports.name = name
+exports.data = data
+exports.renderHTML = renderHTML

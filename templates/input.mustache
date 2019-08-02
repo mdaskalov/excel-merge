@@ -1,16 +1,21 @@
 <table class="table-striped">
   <thead>
-    <tr><th>Name</th><th>m2</th></tr>
+    <tr>
+      <th>Name</th>
+      <th>Instance</th>
+      <th>m2</th>
+    </tr>
   </thead>
   <tbody>
-    {{^data}}<tr><th class="group-header" colspan="2">No input data</th></tr>{{/data}}
+    {{^data}}<tr><th class="group-header" colspan="3">No input data</th></tr>{{/data}}
     {{#data}}
     <tr>
-      <th class="group-header" colspan="2">{{stairway}} / {{floor}} / Top: {{apt}}, Einheit: {{unit}}</th>
+      <th class="group-header" colspan="3">{{stairway}} / {{floor}} / Top: {{apt}}, Einheit: {{unit}}</th>
     </tr>
     {{#content}}
     <tr>
       <td>{{room}}</td>
+      <td>{{instance}}</td>
       <td>{{surface}}</td>
     </tr>
     {{/content}}
