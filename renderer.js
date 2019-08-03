@@ -49,16 +49,35 @@ Array.prototype.forEach.call(docButtons, button => {
 })
 
 document.querySelector('#select-input-file').addEventListener('click', () => {
+  document.querySelector('#select-input-file').classList.add('active')
   ipcRenderer.send('select-input-file')
+})
+
+document.querySelector('#select-mapping-file').addEventListener('click', () => {
+  document.querySelector('#select-mapping-file').classList.add('active')
+  ipcRenderer.send('select-mapping-file')
 })
 
 // Messages
 
 ipcRenderer.on('input-file-selected', (_, fileName) => {
-  input.parseFile(fileName).then(() => {
-    renderDataPane('input')
-  })
+  document.querySelector('#select-input-file').classList.remove('active')
+  if (fileName) {
+    input.parseFile(fileName).then(() => {
+      renderDataPane('input')
+    })
+  }
 })
+
+ipcRenderer.on('mapping-file-selected', (_, fileName) => {
+  document.querySelector('#select-mapping-file').classList.remove('active')
+  if (fileName) {
+    mapping.parseFile(fileName).then(() => {
+      renderDataPane('mapping')
+    })
+  }
+})
+
 
 // Global
 

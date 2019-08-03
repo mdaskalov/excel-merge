@@ -27,3 +27,8 @@ ipcMain.on('select-input-file', event => {
   selectExcelFile().then(path =>
     event.sender.send('input-file-selected', path))
 })
+
+ipcMain.on('select-mapping-file', event => {
+  selectExcelFile().then(path =>
+    event.sender.send('mapping-file-selected', path))
+})
