@@ -1,22 +1,35 @@
-name = 'mapping'
-data = []
+var Excel = require('exceljs')
+var _ = require('lodash')
 
-const renderHTML = () => {
-  if (Array.isArray(data) && data.length !== 0) {
-    var html = '<table class="table-striped"><thead><tr><th>Name</th><th>m2</th></tr></thead><tbody>'
-    data.forEach(dat => {
-      html += `<tr><th class="group-header" colspan="2">${dat.stairway} / ${dat.floor} / Top: ${dat.apt}, Einheit: ${dat.unit}</th></tr>`
-      dat.content.forEach(cnt => {
-        html += `<tr><td>${cnt.room}</td><td>${cnt.surface}</td></tr>`
+const name = 'mapping'
+var data = []
+
+const parseFile = filename =>
+  new Promise(resolve => {
+    var workbook = new Excel.Workbook()
+    workbook.xlsx.readFile(filename)
+      .then(() => {
+        var worksheet = workbook.getWorksheet(1)
+        worksheet.eachRow({
+          includeEmpty: false
+        }, (row, rowNumber) => {
+          let room = row.getCell(1).value
+          let instance = row.getCell(2).value
+          let column = row.getCell(3).value
+          if (rowNumber > 1 && (room != '') && (column != '')) {
+            //console.log(`${room} - ${instance} -> ${column}`)
+            data.push({
+              room,
+              instance,
+              column
+            })
+          }
+        })
+        console.log(data)
+        resolve()
       })
-    })
-    html += '</tbody></table>'
-    return html
-  } else {
-    return 'no data.'
-  }
-}
+  })
 
 exports.name = name
 exports.data = data
-exports.renderHTML = renderHTML
+exports.parseFile = parseFile

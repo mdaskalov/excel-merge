@@ -1,3 +1,19 @@
-{{#data}}
-{{/data}}
-{{^data}}No mapping data{{/data}}
+<table class="table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Instance</th>
+      <th>Column</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{^data}}<tr><th class="group-header" colspan="3">No mapping data</th></tr>{{/data}}
+    {{#data}}
+    <tr>
+      <td>{{room}}</td>
+      <td>{{instance}}</td>
+      <td>{{column}}</td>
+    </tr>
+    {{/data}}
+  </tbody>
+</table>
