@@ -28,10 +28,14 @@ const parseFile = filename =>
               'unit': unit
             })
             if (existing.length !== 0) {
-              if (Array.isArray(existing[0].content)) {
-                existing[0].content.push({
+              let content = existing[0].content
+              if (Array.isArray(content)) {
+                var instance = _.filter(content, {
+                  room
+                }).length + 1
+                content.push({
                   room,
-                  instance: 0,
+                  instance,
                   surface
                 })
               } else {
@@ -45,7 +49,7 @@ const parseFile = filename =>
                 unit,
                 content: [{
                   room,
-                  instance: 0,
+                  instance: 1,
                   surface
                 }]
               })
