@@ -26,11 +26,11 @@ const activateDocLink = view => {
 }
 
 const renderDataPane = viewName => {
-  const viewIndex = views.map(view => view.name).indexOf(viewName)
-  if (viewIndex != -1) {
+  const view = views.find(v => v.name == viewName)
+  if (view) {
     var template = fs.readFileSync(path.join(__dirname, 'templates', viewName + '.mustache'), 'utf-8')
     const dataPane = document.querySelector('#data-pane')
-    dataPane.innerHTML = mustache.render(template, views[viewIndex]);
+    dataPane.innerHTML = mustache.render(template, view);
   }
 }
 
@@ -77,7 +77,6 @@ ipcRenderer.on('mapping-file-selected', (_, fileName) => {
     })
   }
 })
-
 
 // Global
 
