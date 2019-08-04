@@ -25,6 +25,40 @@ convertUnit = (row, unit) => {
   row.getCell(smart === 's' ? 'G' : 'F').value = CHECK
 }
 
+createHeaderRow = (row, mapping) => {
+  for (const cell of ['A', 'B', 'C', 'D', 'E']) {
+    row.getCell(cell).value = cell
+  }
+  row.getCell('F').value = 'Kein SMART'
+  row.getCell('G').value = 'SMART'
+  row.getCell('H').value = 'Stiege'
+  row.getCell('I').value = 'Topnummer'
+  row.getCell('J').value = 'Bauträger'
+  row.getCell('K').value = 'Art'
+  mapping.forEach(entry => {
+    row.getCell(entry.column).value = entry.description
+    row.getCell(entry.column).alignment = {
+      textRotation: 90
+    };
+  })
+  row.eachCell(c => {
+    c.font = {
+      bold: true
+    }
+  })
+
+  // ws.getCell('A2').font = {
+  //   name: 'Arial Black',
+  //   color: {
+  //     argb: 'FF00FF00'
+  //   },
+  //   family: 2,
+  //   size: 14,
+  //   italic: true
+  // };
+
+}
+
 saveFile = (name, input, mapping) =>
   new Promise(resolve => {
     data.length = 0
@@ -35,9 +69,10 @@ saveFile = (name, input, mapping) =>
       }
       var workbook = new Excel.Workbook();
       var worksheet = workbook.addWorksheet('Output');
-
+      const header = worksheet.getRow(1)
+      createHeaderRow(header, mapping)
       input.forEach((item, index) => {
-        const row = worksheet.getRow(index)
+        const row = worksheet.getRow(index + 2)
         row.getCell('H').value = convertStairway(item.stairway)
         row.getCell('I').value = parseInt(item.apt, 10)
         convertUnit(row, item.unit)
