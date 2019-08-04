@@ -48,20 +48,12 @@ Array.prototype.forEach.call(docButtons, button => {
   }
 })
 
-document.querySelector('#select-input-file').addEventListener('click', () => {
-  document.querySelector('#select-input-file').classList.add('active')
-  ipcRenderer.send('select-input-file')
-})
-
-document.querySelector('#select-mapping-file').addEventListener('click', () => {
-  document.querySelector('#select-mapping-file').classList.add('active')
-  ipcRenderer.send('select-mapping-file')
-})
-
-document.querySelector('#select-output-file').addEventListener('click', () => {
-  document.querySelector('#select-output-file').classList.add('active')
-  ipcRenderer.send('select-output-file')
-})
+for (const doc of ['input', 'mapping', 'output']) {
+  document.querySelector(`#select-${doc}-file`).addEventListener('click', () => {
+    document.querySelector(`#select-${doc}-file`).classList.add('active')
+    ipcRenderer.send(`select-${doc}-file`)
+  })
+}
 
 // Messages
 
