@@ -25,7 +25,6 @@ const parseFile = filename =>
             })
           }
         })
-        console.log(data)
         resolve()
       })
   })
