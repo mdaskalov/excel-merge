@@ -27,6 +27,7 @@ convertUnit = (row, unit) => {
 
 saveFile = (name, input, mapping) =>
   new Promise(resolve => {
+    data.length = 0
     if (name != '' && Array.isArray(input) && Array.isArray(mapping)) {
       if (input.length == 0 || mapping.length == 0) {
         dialog.showErrorBox('No Files Selected', 'Load the Input and Mapping documents first.')

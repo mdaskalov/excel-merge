@@ -6,6 +6,7 @@ var data = []
 
 const parseFile = filename =>
   new Promise(resolve => {
+    data.length = 0
     var workbook = new Excel.Workbook()
     workbook.xlsx.readFile(filename)
       .then(() => {
