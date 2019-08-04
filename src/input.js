@@ -20,6 +20,9 @@ const parseFile = filename =>
           let unit = row.getCell(4).value
           let room = row.getCell(5).value
           let surface = row.getCell(6).value
+          if (room === 'Balkon' && surface === 1.16) {
+            room = 'Balkon_116'
+          }
           //console.log(`${stairway} / ${floor} / Top: ${apt} -> ${unit}, ${room} - ${surface} m2`)
           if (rowNumber > 2 && (stairway != '') && (floor != '') && (apt != '') && (unit != '')) {
             var existing = _.filter(data, {
