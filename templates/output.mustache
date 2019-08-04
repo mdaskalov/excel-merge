@@ -1,3 +1,23 @@
-{{#data}}
-{{/data}}
-{{^data}}No output data{{/data}}
+<table class="table-striped">
+  <thead>
+    <tr>
+      <th>Where</th>
+      <th>Name</th>
+      <th>Instance</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{^data}}<tr><th class="group-header" colspan="3">No mapping errors</th></tr>{{/data}}
+    {{#data}}
+    <tr>
+      <td>
+      {{#item}}
+      {{stairway}} / {{floor}} / Top: {{apt}}, Einheit: {{unit}}
+      {{/item}}
+      </td>
+      <td>{{room}}</td>
+      <td>{{instance}}</td>
+    </tr>
+    {{/data}}
+  </tbody>
+</table>
