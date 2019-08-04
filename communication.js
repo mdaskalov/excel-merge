@@ -23,6 +23,25 @@ selectExcelFile = () =>
       })
   })
 
+saveExcelFile = () =>
+  new Promise(resolve => {
+    dialog.showSaveDialog({
+        filters: [{
+          name: 'Excel Files',
+          extensions: ['xls', 'xlsx']
+        }],
+        defaultPath: 'output.xlsx'
+
+      })
+      .then(result => {
+        var relativePath
+        if (!result.canceled && result.filePath) {
+          relativePath = path.relative(process.cwd(), result.filePath);
+        }
+        resolve(relativePath)
+      })
+  })
+
 ipcMain.on('select-input-file', event => {
   selectExcelFile().then(path =>
     event.sender.send('input-file-selected', path))
@@ -31,4 +50,9 @@ ipcMain.on('select-input-file', event => {
 ipcMain.on('select-mapping-file', event => {
   selectExcelFile().then(path =>
     event.sender.send('mapping-file-selected', path))
+})
+
+ipcMain.on('select-output-file', event => {
+  saveExcelFile().then(path =>
+    event.sender.send('output-file-selected', path))
 })

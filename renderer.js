@@ -58,12 +58,19 @@ document.querySelector('#select-mapping-file').addEventListener('click', () => {
   ipcRenderer.send('select-mapping-file')
 })
 
+document.querySelector('#select-output-file').addEventListener('click', () => {
+  document.querySelector('#select-output-file').classList.add('active')
+  ipcRenderer.send('select-output-file')
+})
+
 // Messages
 
 ipcRenderer.on('input-file-selected', (_, fileName) => {
   document.querySelector('#select-input-file').classList.remove('active')
   if (fileName) {
     input.parseFile(fileName).then(() => {
+      deactivateDocLinks()
+      activateDocLink('input')
       renderDataPane('input')
     })
   }
@@ -73,7 +80,20 @@ ipcRenderer.on('mapping-file-selected', (_, fileName) => {
   document.querySelector('#select-mapping-file').classList.remove('active')
   if (fileName) {
     mapping.parseFile(fileName).then(() => {
+      deactivateDocLinks()
+      activateDocLink('mapping')
       renderDataPane('mapping')
+    })
+  }
+})
+
+ipcRenderer.on('output-file-selected', (_, fileName) => {
+  document.querySelector('#select-output-file').classList.remove('active')
+  if (fileName) {
+    output.saveFile(fileName, input.data, mapping.data).then(() => {
+      deactivateDocLinks()
+      activateDocLink('output')
+      renderDataPane('output')
     })
   }
 })
