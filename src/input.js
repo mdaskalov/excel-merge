@@ -38,8 +38,6 @@ const parseFile = filename =>
                   instance,
                   surface
                 })
-              } else {
-                console.log('content not found')
               }
             } else {
               data.push({
