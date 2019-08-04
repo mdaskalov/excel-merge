@@ -1,15 +1,15 @@
-var Excel = require('exceljs');
-var _ = require('lodash');
+const Excel = require('exceljs')
+const _ = require('lodash')
 
 const name = 'input'
 var data = []
 
 const parseFile = filename =>
   new Promise(resolve => {
-    var workbook = new Excel.Workbook();
+    var workbook = new Excel.Workbook()
     workbook.xlsx.readFile(filename)
       .then(() => {
-        var worksheet = workbook.getWorksheet(1);
+        var worksheet = workbook.getWorksheet(1)
         worksheet.eachRow({
           includeEmpty: false
         }, (row, rowNumber) => {
