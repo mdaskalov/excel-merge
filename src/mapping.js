@@ -17,12 +17,14 @@ const parseFile = filename =>
           let room = row.getCell(1).value
           let instance = row.getCell(2).value
           let column = row.getCell(3).value
+          let description = row.getCell(4).value
           if (rowNumber > 1 && (room != '') && (column != '')) {
             //console.log(`${room} - ${instance} -> ${column}`)
             data.push({
               room,
               instance,
-              column
+              column,
+              description
             })
           }
         })

@@ -4,15 +4,17 @@
       <th>Name</th>
       <th>Instance</th>
       <th>Target Column</th>
+      <th>Description</th>
     </tr>
   </thead>
   <tbody>
-    {{^data}}<tr><th class="group-header" colspan="3">No mapping data</th></tr>{{/data}}
+    {{^data}}<tr><th class="group-header" colspan="4">No mapping data</th></tr>{{/data}}
     {{#data}}
     <tr>
       <td>{{room}}</td>
       <td>{{instance}}</td>
       <td>{{column}}</td>
+      <td>{{description}}</td>
     </tr>
     {{/data}}
   </tbody>
