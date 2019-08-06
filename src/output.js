@@ -9,13 +9,6 @@ const CHECK = 'x'
 const name = 'output'
 var data = []
 
-convertStairway = src => {
-  var n = src.lastIndexOf(' ');
-  if (n != -1) {
-    return parseInt(src.substring(n + 1), 10)
-  }
-}
-
 convertUnit = (row, unit) => {
   const cell = unit.charAt(0)
   const smart = unit.charAt(1)
@@ -62,8 +55,8 @@ saveFile = (name, input, mapping, done) => {
     createHeaderRow(header, mapping)
     input.forEach((item, index) => {
       const row = worksheet.getRow(index + 2)
-      row.getCell('H').value = convertStairway(item.stairway)
-      row.getCell('I').value = parseInt(item.apt, 10)
+      row.getCell('H').value = item.stairway
+      row.getCell('I').value = item.apt
       convertUnit(row, item.unit)
       item.content.forEach(cnt => {
         var mapped = _.filter(mapping, {

@@ -42,6 +42,13 @@ roundNumber = num => {
   return +(Math.round(num + "e+2") + "e-2");
 }
 
+convertStairway = src => {
+  var n = src.lastIndexOf(' ');
+  if (n != -1) {
+    return parseInt(src.substring(n + 1), 10)
+  }
+}
+
 const parseFile = (filename, done) => {
   data.length = 0
   var workbook = new Excel.Workbook()
@@ -51,9 +58,9 @@ const parseFile = (filename, done) => {
       worksheet.eachRow({
         includeEmpty: false
       }, (row, rowNumber) => {
-        let stairway = row.getCell(1).text.trim()
+        let stairway = convertStairway(row.getCell(1).text.trim())
         let floor = row.getCell(2).text.trim()
-        let apt = row.getCell(3).text.trim()
+        let apt = parseInt(row.getCell(3).text.trim(), 10)
         let unit = row.getCell(4).text.trim()
         let room = row.getCell(5).text.trim()
         let surface = roundNumber(row.getCell(6).value)
@@ -61,7 +68,7 @@ const parseFile = (filename, done) => {
           room = BALCONY_SPECIAL
         }
         //console.log(`${stairway} / ${floor} / Top: ${apt} -> ${unit}, ${room} - ${surface} m2`)
-        if (rowNumber > 2 && (stairway != '') && (floor != '') && (apt != '') && (unit != '')) {
+        if (rowNumber > 2 && !isNaN(stairway) && (floor != '') && (apt != '') && (unit != '')) {
           var existing = _.filter(data, {
             'stairway': stairway,
             'floor': floor,
