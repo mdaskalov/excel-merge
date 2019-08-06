@@ -16,10 +16,15 @@ const TYPE_C_SMART_TH = 70.0
 const TYPE_D_ROOMS = 4
 const TYPE_D_SMART_TH = 85.0
 
-const ROOM_NAMES = ['Zimmer', 'AR', 'Wohnzimmer', 'Wohnküche', 'Schlafnische']
+const ROOM_NAMES = ['Zimmer', 'Wohnzimmer', 'Wohnküche', 'Wohnraum']
+const NO_ROOM_SURFACE_NAMES = [BALCONY, BALCONY_SPECIAL, 'Terrasse', 'Loggia', 'Garten']
 
 isRoom = name => {
   return ROOM_NAMES.indexOf(name) > -1
+}
+
+isRoomSurface = name => {
+  return NO_ROOM_SURFACE_NAMES.indexOf(name) == -1
 }
 
 aptType = (rooms, surface) => {
@@ -33,8 +38,9 @@ aptType = (rooms, surface) => {
     case TYPE_C_ROOMS:
       return surface <= TYPE_C_SMART_TH ? 'Cs' : 'C'
     case TYPE_D_ROOMS:
-    default:
       return surface <= TYPE_D_SMART_TH ? 'Ds' : 'D'
+    default:
+      return 'E'
   }
 }
 
@@ -80,7 +86,7 @@ const parseFile = (filename, done) => {
             summary.surface = roundNumber(summary.surface + surface)
             if (isRoom(room)) {
               summary.rooms += 1
-              summary.roomsSurface = roundNumber(summary.roomsSurface + surface)
+              summary.roomsSurface = roundNumber(summary.roomsSurface + isRoomSurface(room) ? surface : 0)
               summary.type = aptType(summary.rooms, summary.roomsSurface)
             }
             let content = existing[0].content
@@ -96,7 +102,7 @@ const parseFile = (filename, done) => {
             }
           } else {
             let rooms = isRoom(room) ? 1 : 0
-            let roomsSurface = roundNumber(rooms * surface)
+            let roomsSurface = roundNumber(isRoomSurface(room) ? surface : 0)
             let type = aptType(rooms, roomsSurface)
             data.push({
               stairway,
