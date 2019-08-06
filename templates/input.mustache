@@ -11,11 +11,14 @@
     {{#data}}
     <tr>
       <th class="group-header" colspan="3">
-        {{stairway}} / {{floor}} / Top: {{apt}}, Einheit: {{unit}} :-
+        Apt: <span class="highlight">{{stairway}} / {{apt}}</span>
+        Floor: <span class="highlight">{{floor}}</span>
+        Unit: <span class="highlight">{{unit}}</span>
         {{#summary}}
-        Gesamt: <span class="highlight">{{surface}}</span> m<sup>2</sup>,
-        Typ: <span class="highlight">{{type}}</span>,
-        Zimmer: <span class="highlight">{{rooms}}</span>, <span class="highlight">{{roomsSurface}}</span> m<sup>2</sup>
+        Surface: <span class="highlight">{{surface}} m<sup>2</sup></span>
+        Rooms: <span class="highlight">{{rooms}}</span>
+        Rooms surface: <span class="highlight">{{roomsSurface}} m<sup>2</sup></span>
+        Type: <span class="highlight">{{type}}</span>
         {{/summary}}
       </th>
     </tr>
