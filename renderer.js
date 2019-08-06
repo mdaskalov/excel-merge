@@ -1,9 +1,11 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
+
 const {
-  ipcRenderer
-} = require('electron')
+  dialog
+} = require('electron').remote
+
 const mustache = require('mustache')
 const fs = require('fs')
 const path = require('path')
@@ -12,6 +14,42 @@ const mapping = require('./src/mapping')
 const output = require('./src/output')
 
 const views = [input, mapping, output];
+
+selectExcelFile = done => {
+  dialog.showOpenDialog({
+      filters: [{
+        name: 'Excel Files',
+        extensions: ['xls', 'xlsx']
+      }],
+      properties: ['openFile']
+
+    })
+    .then(result => {
+      var relativePath
+      if (!result.canceled && result.filePaths.length >= 1) {
+        relativePath = path.relative(process.cwd(), result.filePaths[0]);
+      }
+      done(relativePath)
+    })
+}
+
+saveExcelFile = done => {
+  dialog.showSaveDialog({
+      filters: [{
+        name: 'Excel Files',
+        extensions: ['xls', 'xlsx']
+      }],
+      defaultPath: 'output.xlsx'
+
+    })
+    .then(result => {
+      var relativePath
+      if (!result.canceled && result.filePath) {
+        relativePath = path.relative(process.cwd(), result.filePath);
+      }
+      done(relativePath)
+    })
+}
 
 const deactivateDocLinks = () => {
   const active = document.querySelectorAll('.nav-group-item.active')
@@ -42,52 +80,52 @@ Array.prototype.forEach.call(docButtons, button => {
   if (viewName != undefined) {
     button.addEventListener('click', () => {
       deactivateDocLinks()
-      activateDocLink(viewName)
       renderDataPane(viewName)
+      activateDocLink(viewName)
     })
   }
 })
 
-for (const doc of ['input', 'mapping', 'output']) {
-  document.querySelector(`#select-${doc}-file`).addEventListener('click', () => {
-    document.querySelector(`#select-${doc}-file`).classList.add('active')
-    ipcRenderer.send(`select-${doc}-file`)
+document.querySelector(`#select-input-file`).addEventListener('click', () => {
+  document.querySelector(`#select-input-file`).classList.add('active')
+  selectExcelFile(fileName => {
+    document.querySelector('#select-input-file').classList.remove('active')
+    if (fileName) {
+      input.parseFile(fileName, () => {
+        deactivateDocLinks()
+        activateDocLink('input')
+        renderDataPane('input')
+      })
+    }
   })
-}
-
-// Messages
-
-ipcRenderer.on('input-file-selected', (_, fileName) => {
-  document.querySelector('#select-input-file').classList.remove('active')
-  if (fileName) {
-    input.parseFile(fileName).then(() => {
-      deactivateDocLinks()
-      activateDocLink('input')
-      renderDataPane('input')
-    })
-  }
 })
 
-ipcRenderer.on('mapping-file-selected', (_, fileName) => {
-  document.querySelector('#select-mapping-file').classList.remove('active')
-  if (fileName) {
-    mapping.parseFile(fileName).then(() => {
-      deactivateDocLinks()
-      activateDocLink('mapping')
-      renderDataPane('mapping')
-    })
-  }
+document.querySelector(`#select-mapping-file`).addEventListener('click', () => {
+  document.querySelector(`#select-mapping-file`).classList.add('active')
+  selectExcelFile(fileName => {
+    document.querySelector('#select-mapping-file').classList.remove('active')
+    if (fileName) {
+      mapping.parseFile(fileName, () => {
+        deactivateDocLinks()
+        activateDocLink('mapping')
+        renderDataPane('mapping')
+      })
+    }
+  })
 })
 
-ipcRenderer.on('output-file-selected', (_, fileName) => {
-  document.querySelector('#select-output-file').classList.remove('active')
-  if (fileName) {
-    output.saveFile(fileName, input.data, mapping.data).then(() => {
-      deactivateDocLinks()
-      activateDocLink('output')
-      renderDataPane('output')
-    })
-  }
+document.querySelector(`#select-output-file`).addEventListener('click', () => {
+  document.querySelector(`#select-output-file`).classList.add('active')
+  saveExcelFile(fileName => {
+    document.querySelector('#select-output-file').classList.remove('active')
+    if (fileName) {
+      output.saveFile(fileName, input.data, mapping.data, () => {
+        deactivateDocLinks()
+        activateDocLink('output')
+        renderDataPane('output')
+      })
+    }
+  })
 })
 
 // Global
