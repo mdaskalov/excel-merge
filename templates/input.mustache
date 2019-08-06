@@ -10,7 +10,12 @@
     {{^data}}<tr><th class="group-header" colspan="3">No input data</th></tr>{{/data}}
     {{#data}}
     <tr>
-      <th class="group-header" colspan="3">{{stairway}} / {{floor}} / Top: {{apt}}, Einheit: {{unit}}</th>
+      <th class="group-header" colspan="3">
+        {{stairway}} / {{floor}} / Top: {{apt}}, Einheit: {{unit}} :-
+        {{#summary}}
+        Zimmer: {{rooms}}, {{roomsSurface}} m2, Gesamt: {{surface}} m2, Typ: {{type}}
+        {{/summary}}
+      </th>
     </tr>
     {{#content}}
     <tr>
