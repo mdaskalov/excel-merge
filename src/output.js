@@ -49,47 +49,46 @@ createHeaderRow = (row, mapping) => {
 
 }
 
-saveFile = (name, input, mapping) =>
-  new Promise(resolve => {
-    data.length = 0
-    if (name != '' && Array.isArray(input) && Array.isArray(mapping)) {
-      if (input.length == 0 || mapping.length == 0) {
-        dialog.showErrorBox('No Files Selected', 'Load the Input and Mapping documents first.')
-        return
-      }
-      var workbook = new Excel.Workbook();
-      var worksheet = workbook.addWorksheet('Output');
-      const header = worksheet.getRow(1)
-      createHeaderRow(header, mapping)
-      input.forEach((item, index) => {
-        const row = worksheet.getRow(index + 2)
-        row.getCell('H').value = convertStairway(item.stairway)
-        row.getCell('I').value = parseInt(item.apt, 10)
-        convertUnit(row, item.unit)
-        item.content.forEach(cnt => {
-          var mapped = _.filter(mapping, {
-            'room': cnt.room,
-            'instance': cnt.instance,
-          })
-          if (mapped.length === 1) {
-            const column = mapped[0].column
-            row.getCell(column).value = cnt.surface
-          } else {
-            data.push({
-              item,
-              room: cnt.room,
-              instance: cnt.instance
-            })
-          }
-        })
-        row.commit()
-      })
-      workbook.xlsx.writeFile(name)
-        .then(() => {
-          resolve()
-        })
+saveFile = (name, input, mapping, done) => {
+  data.length = 0
+  if (name != '' && Array.isArray(input) && Array.isArray(mapping)) {
+    if (input.length == 0 || mapping.length == 0) {
+      dialog.showErrorBox('No Files Selected', 'Load the Input and Mapping documents first.')
+      return
     }
-  })
+    var workbook = new Excel.Workbook();
+    var worksheet = workbook.addWorksheet('Output');
+    const header = worksheet.getRow(1)
+    createHeaderRow(header, mapping)
+    input.forEach((item, index) => {
+      const row = worksheet.getRow(index + 2)
+      row.getCell('H').value = convertStairway(item.stairway)
+      row.getCell('I').value = parseInt(item.apt, 10)
+      convertUnit(row, item.unit)
+      item.content.forEach(cnt => {
+        var mapped = _.filter(mapping, {
+          'room': cnt.room,
+          'instance': cnt.instance,
+        })
+        if (mapped.length === 1) {
+          const column = mapped[0].column
+          row.getCell(column).value = cnt.surface
+        } else {
+          data.push({
+            item,
+            room: cnt.room,
+            instance: cnt.instance
+          })
+        }
+      })
+      row.commit()
+    })
+    workbook.xlsx.writeFile(name)
+      .then(() => {
+        done()
+      })
+  }
+}
 
 exports.name = name
 exports.data = data
