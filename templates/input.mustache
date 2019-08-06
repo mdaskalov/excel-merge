@@ -3,7 +3,7 @@
     <tr>
       <th>Name</th>
       <th>Instance</th>
-      <th>m2</th>
+      <th>Surface m<sup>2</sup></th>
     </tr>
   </thead>
   <tbody>
@@ -13,7 +13,9 @@
       <th class="group-header" colspan="3">
         {{stairway}} / {{floor}} / Top: {{apt}}, Einheit: {{unit}} :-
         {{#summary}}
-        Zimmer: {{rooms}}, {{roomsSurface}} m2, Gesamt: {{surface}} m2, Typ: {{type}}
+        Gesamt: <span class="highlight">{{surface}}</span> m<sup>2</sup>,
+        Typ: <span class="highlight">{{type}}</span>,
+        Zimmer: <span class="highlight">{{rooms}}</span>, <span class="highlight">{{roomsSurface}}</span> m<sup>2</sup>
         {{/summary}}
       </th>
     </tr>

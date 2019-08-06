@@ -1,5 +1,12 @@
 th.group-header {
-  background: #6eb4f7;
+  background: #3e9bf4;
   font-weight: bold;
-  color: white;
+  color: #fcfcfc;
+}
+
+.highlight {
+  background: #fece72;
+  color: black;
+  padding-left: 3px;
+  padding-right: 3px;
 }
