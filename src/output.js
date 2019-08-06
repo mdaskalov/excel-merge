@@ -47,16 +47,6 @@ createHeaderRow = (row, mapping) => {
     }
   })
 
-  // ws.getCell('A2').font = {
-  //   name: 'Arial Black',
-  //   color: {
-  //     argb: 'FF00FF00'
-  //   },
-  //   family: 2,
-  //   size: 14,
-  //   italic: true
-  // };
-
 }
 
 saveFile = (name, input, mapping) =>
@@ -78,7 +68,7 @@ saveFile = (name, input, mapping) =>
         convertUnit(row, item.unit)
         item.content.forEach(cnt => {
           var mapped = _.filter(mapping, {
-            'room': cnt.room.trim(),
+            'room': cnt.room,
             'instance': cnt.instance,
           })
           if (mapped.length === 1) {
