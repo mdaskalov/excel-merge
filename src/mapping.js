@@ -1,5 +1,4 @@
 var Excel = require('exceljs')
-var _ = require('lodash')
 
 const name = 'mapping'
 var data = []
