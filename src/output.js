@@ -5,12 +5,13 @@ const Excel = require('exceljs')
 const _ = require('lodash');
 
 const CHECK = 'x'
+const UNIT_FOR_D_TYPE = 'Balance'
 
 const name = 'output'
 var data = []
 
 convertUnit = (row, unit) => {
-  const cell = unit.charAt(0)
+  const cell = unit == UNIT_FOR_D_TYPE ? 'D' : unit.charAt(0)
   const smart = unit.charAt(1)
   if (cell >= 'A' && cell <= 'E') {
     row.getCell(cell).value = CHECK
