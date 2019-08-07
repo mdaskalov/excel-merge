@@ -15,3 +15,7 @@ th.group-header {
   padding-right: 5px;
   border-radius: 5px;
 }
+
+.pane-sm {
+  max-width: 150px;
+}
