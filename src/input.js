@@ -74,7 +74,7 @@ const parseFile = (filename, done) => {
           room = BALCONY_SPECIAL
         }
         //console.log(`${stairway} / ${floor} / Top: ${apt} -> ${unit}, ${room} - ${surface} m2`)
-        if (rowNumber > 2 && !isNaN(stairway) && (floor != '') && (apt != '') && (unit != '')) {
+        if (rowNumber > 2 && !isNaN(stairway) && (floor != '') && !isNaN(apt) && (unit != '')) {
           var existing = _.filter(data, {
             'stairway': stairway,
             'floor': floor,
