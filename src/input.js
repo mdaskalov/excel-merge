@@ -4,9 +4,6 @@ const _ = require('lodash')
 const name = 'input'
 var data = []
 
-const BALCONY = 'Balkon'
-const BALCONY_SPECIAL = 'Balkon_116'
-const BALCONY_SPECIAL_SURFACE = 1.16
 const TYPE_A_ROOMS = 1
 const TYPE_A_SMART_TH = 40.0
 const TYPE_B_ROOMS = 2
@@ -17,7 +14,7 @@ const TYPE_D_ROOMS = 4
 const TYPE_D_SMART_TH = 85.0
 
 const ROOM_NAMES = ['Zimmer', 'Wohnzimmer', 'Wohnküche', 'Wohnraum']
-const NO_ROOM_SURFACE_NAMES = [BALCONY, BALCONY_SPECIAL, 'Terrasse', 'Loggia', 'Garten']
+const NO_ROOM_SURFACE_NAMES = ['Balkon', 'Terrasse', 'Loggia', 'Garten', 'KA']
 
 isRoom = name => {
   return ROOM_NAMES.indexOf(name) > -1
@@ -70,25 +67,25 @@ const parseFile = (filename, done) => {
         let unit = row.getCell(4).text.trim()
         let room = row.getCell(5).text.trim()
         let surface = roundNumber(row.getCell(6).value)
-        if (room === BALCONY && surface === BALCONY_SPECIAL_SURFACE) {
-          room = BALCONY_SPECIAL
-        }
-        //console.log(`${stairway} / ${floor} / Top: ${apt} -> ${unit}, ${room} - ${surface} m2`)
-        if (rowNumber > 2 && !isNaN(stairway) && (floor != '') && !isNaN(apt) && (unit != '')) {
+        let roomSurface = isRoomSurface(room) ? surface : 0
+        //console.log(`Row: ${rowNumber}: ${stairway} / ${floor} / ${apt} -> Unit: ${unit}, Room: ${room} - Surface: ${surface} m2, RoomSurface: ${roomSurface} m2`)
+        if (rowNumber > 2 && !isNaN(stairway) && (floor != '') && !isNaN(apt)) {
           var existing = _.filter(data, {
             'stairway': stairway,
             'floor': floor,
-            'apt': apt,
-            'unit': unit
+            'apt': apt
           })
           if (existing.length !== 0) {
             let summary = existing[0].summary
+            if (unit != '') {
+              summary.unit = _.union(summary.unit, [unit])
+            }
             summary.surface = roundNumber(summary.surface + surface)
+            summary.roomsSurface = roundNumber(summary.roomsSurface + roomSurface)
             if (isRoom(room)) {
               summary.rooms += 1
-              summary.roomsSurface = roundNumber(summary.roomsSurface + isRoomSurface(room) ? surface : 0)
-              summary.type = aptType(summary.rooms, summary.roomsSurface)
             }
+            summary.type = aptType(summary.rooms, summary.roomsSurface)
             let content = existing[0].content
             if (Array.isArray(content)) {
               var instance = _.filter(content, {
@@ -102,14 +99,14 @@ const parseFile = (filename, done) => {
             }
           } else {
             let rooms = isRoom(room) ? 1 : 0
-            let roomsSurface = roundNumber(isRoomSurface(room) ? surface : 0)
+            let roomsSurface = roundNumber(roomSurface)
             let type = aptType(rooms, roomsSurface)
             data.push({
               stairway,
               floor,
               apt,
-              unit,
               summary: {
+                unit: unit != '' ? [unit] : [],
                 surface,
                 rooms,
                 roomsSurface,
