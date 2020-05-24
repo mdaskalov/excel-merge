@@ -23,7 +23,7 @@
   "homepage": "https://github.com/mdaskalov/excel-merge#readme",
   "devDependencies": {
     "electron": "^6.0.0",
-    "electron-builder": "^21.2.0"
+    "electron-builder": "^22.6.1"
   },
   "dependencies": {
     "exceljs": "^1.14.0",
