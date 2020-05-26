@@ -1,20 +1,20 @@
 <table class="table-striped">
   <thead>
     <tr>
-      <th>Where</th>
-      <th>Name</th>
-      <th>Instance</th>
+      <th>Wo</th>
+      <th>Raumname CAD</th>
+      <th>Anz. Vorkommen</th>
     </tr>
   </thead>
   <tbody>
-    {{^data}}<tr><th class="group-header" colspan="3">No mapping errors</th></tr>{{/data}}
+    {{^data}}<tr><th class="group-header" colspan="3">Keine Fehler beim Mapping</th></tr>{{/data}}
     {{#data}}
     <tr>
       <td>
       {{#item}}
-      Apt: {{stairway}} / {{apt}}
-      Floor: {{floor}}
-      Unit: {{unit}}
+      Top: {{stairway}} / {{apt}}
+      Geschoss: {{floor}}
+      Typ: {{unit}}
       {{/item}}
       </td>
       <td>{{room}}</td>
