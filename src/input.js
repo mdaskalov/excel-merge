@@ -73,7 +73,8 @@ const parseFile = (filename, done) => {
       worksheet.eachRow({
         includeEmpty: false
       }, (row, rowNumber) => {
-        let apt = formatApartment(row.getCell(1).text.trim(), row.getCell(3).text.trim())
+        let stairway = pad(convertStairway(row.getCell(1).text.trim()), 2)
+        let apt = pad(parseInt(row.getCell(3).text.trim(), 10), 2)
         let floor = row.getCell(2).text.trim()
         let unit = row.getCell(4).text.trim()
         let roomName = row.getCell(5).text.trim()
@@ -81,8 +82,9 @@ const parseFile = (filename, done) => {
         let isRoom = isRoomName(roomName)
         let roomSurface = isRoomSurface(roomName) ? surface : 0
         //console.log(`Row: ${rowNumber}: ${stairway} / ${floor} / ${apt} -> Unit: ${unit}, RoomName: ${roomName} - Surface: ${surface} m2, RoomSurface: ${roomSurface} m2`)
-        if ((rowNumber > 2) && (apt != '')) {
+        if ((rowNumber > 2) && !isNaN(stairway) && !isNaN(apt)) {
           var existing = _.filter(data, {
+            'stairway': stairway,
             'apt': apt
           })
           if (existing.length !== 0) {
@@ -112,6 +114,7 @@ const parseFile = (filename, done) => {
             let roomsSurface = roundNumber(roomSurface)
             let type = aptType(rooms, roomsSurface)
             data.push({
+              stairway,
               apt,
               summary: {
                 floor: floor != '' ? [floor] : [],
