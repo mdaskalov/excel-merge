@@ -91,7 +91,7 @@ const parseFile = (filename, done) => {
             summary.unit = _.union(summary.unit, unit != '' ? [unit] : [])
             summary.surface = roundNumber(summary.surface + surface)
             summary.rooms += isRoom ? 1 : 0
-            summary.roomsSurface = roundNumber(summary.roomsSurface + roomSurface)
+            summary.roomsSurface = roundNumber(roundNumber(summary.roomsSurface) + roomSurface).toFixed(2)
             summary.type = aptType(summary.rooms, summary.roomsSurface)
             let content = existing[0].content
             if (Array.isArray(content)) {
@@ -104,7 +104,7 @@ const parseFile = (filename, done) => {
                 floor,
                 unit,
                 isRoom,
-                surface: surface
+                surface: surface.toFixed(2)
               })
             }
           } else {
@@ -118,7 +118,7 @@ const parseFile = (filename, done) => {
                 unit: unit != '' ? [unit] : [],
                 surface,
                 rooms,
-                roomsSurface: roomSurface,
+                roomsSurface: roomSurface.toFixed(2),
                 type
               },
               content: [{
@@ -127,7 +127,7 @@ const parseFile = (filename, done) => {
                 floor,
                 unit,
                 isRoom,
-                surface: surface
+                surface: surface.toFixed(2)
               }]
             })
           }
