@@ -16,15 +16,15 @@ const TYPE_D_SMART_TH = 85.0
 const ROOM_NAMES = ['Zimmer', 'Wohnzimmer', 'Wohnküche', 'Wohnraum']
 const NO_ROOM_SURFACE_NAMES = ['Balkon', 'Terrasse', 'Loggia', 'Garten', 'KA']
 
-isRoomName = name => {
+const isRoomName = name => {
   return ROOM_NAMES.indexOf(name) > -1
 }
 
-isRoomSurface = name => {
+const isRoomSurface = name => {
   return NO_ROOM_SURFACE_NAMES.indexOf(name) == -1
 }
 
-aptType = (rooms, surface) => {
+const aptType = (rooms, surface) => {
   switch (rooms) {
     case 0:
       return '-'
@@ -41,15 +41,27 @@ aptType = (rooms, surface) => {
   }
 }
 
-roundNumber = num => {
+const roundNumber = num => {
   return +(Math.round(num + "e+2") + "e-2");
 }
 
-convertStairway = src => {
+const convertStairway = src => {
   var n = src.lastIndexOf(' ');
   if (n != -1) {
     return parseInt(src.substring(n + 1), 10)
   }
+}
+
+const pad = (num, size) => {
+  var s = num + "";
+  while (s.length < size) s = "0" + s;
+  return s;
+}
+
+const formatApartment = (stairway, apt) => {
+  iStairway = convertStairway(stairway)
+  iApt = parseInt(apt, 10)
+  return isNaN(iStairway) || isNaN(iApt) ? '' : pad(iStairway, 2) + '/' + pad(iApt, 2)
 }
 
 const parseFile = (filename, done) => {
@@ -61,8 +73,7 @@ const parseFile = (filename, done) => {
       worksheet.eachRow({
         includeEmpty: false
       }, (row, rowNumber) => {
-        let stairway = convertStairway(row.getCell(1).text.trim())
-        let apt = parseInt(row.getCell(3).text.trim(), 10)
+        let apt = formatApartment(row.getCell(1).text.trim(), row.getCell(3).text.trim())
         let floor = row.getCell(2).text.trim()
         let unit = row.getCell(4).text.trim()
         let roomName = row.getCell(5).text.trim()
@@ -70,23 +81,16 @@ const parseFile = (filename, done) => {
         let isRoom = isRoomName(roomName)
         let roomSurface = isRoomSurface(roomName) ? surface : 0
         //console.log(`Row: ${rowNumber}: ${stairway} / ${floor} / ${apt} -> Unit: ${unit}, RoomName: ${roomName} - Surface: ${surface} m2, RoomSurface: ${roomSurface} m2`)
-        if (rowNumber > 2 && !isNaN(stairway) && !isNaN(apt)) {
+        if ((rowNumber > 2) && (apt != '')) {
           var existing = _.filter(data, {
-            'stairway': stairway,
             'apt': apt
           })
           if (existing.length !== 0) {
             let summary = existing[0].summary
-            if (floor != '') {
-              summary.floor = _.union(summary.floor, [floor])
-            }
-            if (unit != '') {
-              summary.unit = _.union(summary.unit, [unit])
-            }
+            summary.floor = _.union(summary.floor, floor != '' ? [floor] : [])
+            summary.unit = _.union(summary.unit, unit != '' ? [unit] : [])
             summary.surface = roundNumber(summary.surface + surface)
-            if (isRoom) {
-              summary.rooms += 1
-            }
+            summary.rooms += isRoom ? 1 : 0
             summary.roomsSurface = roundNumber(summary.roomsSurface + roomSurface)
             summary.type = aptType(summary.rooms, summary.roomsSurface)
             let content = existing[0].content
@@ -108,7 +112,6 @@ const parseFile = (filename, done) => {
             let roomsSurface = roundNumber(roomSurface)
             let type = aptType(rooms, roomsSurface)
             data.push({
-              stairway,
               apt,
               summary: {
                 floor: floor != '' ? [floor] : [],
