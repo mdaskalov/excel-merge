@@ -12,14 +12,14 @@ const parseFile = (filename, done) => {
       worksheet.eachRow({
         includeEmpty: false
       }, (row, rowNumber) => {
-        let room = row.getCell(1).text.trim()
+        let roomName = row.getCell(1).text.trim()
         let instance = parseInt(row.getCell(2).value)
         let column = row.getCell(3).text.trim()
         let description = row.getCell(4).text
-        if (rowNumber > 1 && (room != '') && !isNaN(instance) && (column != '')) {
-          //console.log(`${room} - ${instance} -> ${column}`)
+        if (rowNumber > 1 && (roomName != '') && !isNaN(instance) && (column != '')) {
+          //console.log(`${roomName} - ${instance} -> ${column}`)
           data.push({
-            room,
+            roomName,
             instance,
             column,
             description
