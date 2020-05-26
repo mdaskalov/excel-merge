@@ -12,7 +12,15 @@
   },
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "osxSign": {
+          "identity": "Developer ID Application: Milko Daskalov (????)",
+          "hardened-runtime": true,
+          "entitlements": "entitlements.plist",
+          "entitlements-inherit": "entitlements.plist",
+          "signature-flags": "library"
+        }
+      },
       "makers": [{
           "name": "@electron-forge/maker-squirrel",
           "config": {
