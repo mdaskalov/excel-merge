@@ -16,6 +16,14 @@ th.group-header {
   border-radius: 5px;
 }
 
+.surface {
+  text-align: right;
+}
+
+.room {
+  font-weight: bolder;
+}
+
 .pane-sm {
   max-width: 150px;
 }

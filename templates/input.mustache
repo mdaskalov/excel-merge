@@ -1,32 +1,46 @@
 <table class="table-striped">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Instance</th>
-      <th>Surface m<sup>2</sup></th>
+      <th>Raumname CAD</th>
+      <th style="width: 100px;">Anz. Vorkommen</th>
+      <th style="width: 100px;">Geschoss</th>
+      <th>Typ</th>
+      <th style="width: 90px;">Fläche m<sup>2</sup></th>
     </tr>
   </thead>
   <tbody>
-    {{^data}}<tr><th class="group-header" colspan="3">No input data</th></tr>{{/data}}
+    {{^data}}<tr><th class="group-header" colspan="5">Keine Daten</th></tr>{{/data}}
     {{#data}}
     <tr>
-      <th class="group-header" colspan="3">
+      <th class="group-header" colspan="5">
         Top: <span class="highlight">{{stairway}} / {{apt}}</span>
-        Geschoss: <span class="highlight">{{floor}}</span>
         {{#summary}}
         Typ: <span class="highlight">{{unit}}</span>
-        Smart: <span class="highlight">{{type}}</span>
+        Prüfung Typ: <span class="highlight">{{type}}</span>
         Zimmer: <span class="highlight">{{rooms}}</span>
         WN Fläche: <span class="highlight">{{roomsSurface}} m<sup>2</sup></span>
         {{/summary}}
       </th>
     </tr>
     {{#content}}
-    <tr>
-      <td>{{room}}</td>
-      <td>{{instance}}</td>
-      <td>{{surface}}</td>
-    </tr>
+    {{^isRoom}}
+      <tr>
+        <td>{{roomName}}</td>
+        <td>{{instance}}</td>
+        <td>{{floor}}</td>
+        <td>{{unit}}</td>
+        <td class="surface">{{surface}}</td>
+      </tr>
+    {{/isRoom}}
+    {{#isRoom}}
+      <tr>
+        <td class="room">{{roomName}}</td>
+        <td>{{instance}}</td>
+        <td>{{floor}}</td>
+        <td>{{unit}}</td>
+        <td class="surface room">{{surface}}</td>
+      </tr>
+    {{/isRoom}}
     {{/content}}
     {{/data}}
   </tbody>
