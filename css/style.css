@@ -27,3 +27,7 @@ th.group-header {
 .pane-sm {
   max-width: 150px;
 }
+
+.right {
+  float: right;
+}
