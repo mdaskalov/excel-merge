@@ -58,10 +58,10 @@ saveFile = (name, input, mapping, done) => {
       const row = worksheet.getRow(index + 2)
       row.getCell('H').value = item.stairway
       row.getCell('I').value = item.apt
-      convertUnit(row, item.unit)
       item.content.forEach(cnt => {
+        convertUnit(row, cnt.unit)
         var mapped = _.filter(mapping, {
-          'room': cnt.room,
+          'roomName': cnt.roomName,
           'instance': cnt.instance,
         })
         if (mapped.length === 1) {
@@ -70,7 +70,7 @@ saveFile = (name, input, mapping, done) => {
         } else {
           data.push({
             item,
-            room: cnt.room,
+            roomName: cnt.roomName,
             instance: cnt.instance
           })
         }
