@@ -12,13 +12,13 @@ var data = []
 
 convertUnit = (row, unit) => {
   if (unit != '') {
-  const cell = unit == UNIT_FOR_D_TYPE ? 'D' : unit.charAt(0)
-  const smart = unit.charAt(1)
-  if (cell >= 'A' && cell <= 'E') {
-    row.getCell(cell).value = CHECK
+    const cell = unit == UNIT_FOR_D_TYPE ? 'D' : unit.charAt(0)
+    const smart = unit.charAt(1)
+    if (cell >= 'A' && cell <= 'E') {
+      row.getCell(cell).value = CHECK
+    }
+    row.getCell(smart === 's' ? 'G' : 'F').value = CHECK
   }
-  row.getCell(smart === 's' ? 'G' : 'F').value = CHECK
-}
 }
 
 createHeaderRow = (row, mapping) => {
@@ -58,8 +58,8 @@ saveFile = (name, input, mapping, done) => {
     createHeaderRow(header, mapping)
     input.forEach((item, index) => {
       const row = worksheet.getRow(index + 2)
-      row.getCell('H').value = item.stairway
-      row.getCell('I').value = item.apt
+      row.getCell('H').value = parseInt(item.stairway, 10)
+      row.getCell('I').value = parseInt(item.apt, 10)
       item.content.forEach(cnt => {
         convertUnit(row, cnt.unit)
         var mapped = _.filter(mapping, {
@@ -68,7 +68,8 @@ saveFile = (name, input, mapping, done) => {
         })
         if (mapped.length === 1) {
           const column = mapped[0].column
-          row.getCell(column).value = cnt.surface
+          row.getCell(column).value = parseFloat(cnt.surface)
+          row.getCell(column).numFmt = '0.00';
         } else {
           data.push({
             item,
