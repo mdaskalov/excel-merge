@@ -10,7 +10,7 @@ const UNIT_FOR_D_TYPE = 'Balance'
 const name = 'output'
 var data = []
 
-convertUnit = (row, unit) => {
+const convertUnit = (row, unit) => {
   if (unit != '') {
     const cell = unit == UNIT_FOR_D_TYPE ? 'D' : unit.charAt(0)
     const smart = unit.charAt(1)
@@ -21,7 +21,7 @@ convertUnit = (row, unit) => {
   }
 }
 
-createHeaderRow = (row, mapping) => {
+const createHeaderRow = (row, mapping) => {
   for (const cell of ['A', 'B', 'C', 'D', 'E']) {
     row.getCell(cell).value = cell
   }
@@ -42,10 +42,25 @@ createHeaderRow = (row, mapping) => {
       bold: true
     }
   })
-
 }
 
-saveFile = (name, input, mapping, done) => {
+const compareInputObj = (a, b) => {
+  if (a.stairway < b.stairway) {
+    return -1
+  }
+  if (a.stairway > b.stairway) {
+    return 1
+  }
+  if (a.apt < b.apt) {
+    return -1
+  }
+  if (a.apt > b.apt) {
+    return 1
+  }
+  return 0
+}
+
+const saveFile = (name, input, mapping, done) => {
   data.length = 0
   if (name != '' && Array.isArray(input) && Array.isArray(mapping)) {
     if (input.length == 0 || mapping.length == 0) {
@@ -56,6 +71,7 @@ saveFile = (name, input, mapping, done) => {
     var worksheet = workbook.addWorksheet('Output');
     const header = worksheet.getRow(1)
     createHeaderRow(header, mapping)
+    input.sort(compareInputObj)
     input.forEach((item, index) => {
       const row = worksheet.getRow(index + 2)
       row.getCell('H').value = parseInt(item.stairway, 10)
