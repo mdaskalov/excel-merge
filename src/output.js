@@ -11,12 +11,14 @@ const name = 'output'
 var data = []
 
 convertUnit = (row, unit) => {
+  if (unit != '') {
   const cell = unit == UNIT_FOR_D_TYPE ? 'D' : unit.charAt(0)
   const smart = unit.charAt(1)
   if (cell >= 'A' && cell <= 'E') {
     row.getCell(cell).value = CHECK
   }
   row.getCell(smart === 's' ? 'G' : 'F').value = CHECK
+}
 }
 
 createHeaderRow = (row, mapping) => {
